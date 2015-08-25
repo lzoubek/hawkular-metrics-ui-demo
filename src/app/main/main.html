@@ -1,0 +1,96 @@
+<div class="container">
+
+  <div>
+    <acme-navbar creationDate="main.creationDate" />
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6">
+      <div class="form-group">
+        <label for="metricsUrl">Hawkular Metrics API URL</label>
+        <input type="text" class="form-control" id="main.userInputs.metricsUrl" placeholder="http://localhost:8080/hawkular/metrics" ng-model="main.userInputs.metricsUrl">
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label for="tenantId">Tenant ID</label>
+        <input type="text" class="form-control" id="tenantId" placeholder="Tenant ID" ng-model="main.userInputs.tenantId">
+      </div>
+    </div>
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label for="tagQuery">Search by Tags</label>
+        <div class="input-group">
+          <input type="text" class="form-control" id="tagQuery" placeholder="myTag:myValue" ng-model="main.userInputs.tagQuery">
+          <span class="input-group-btn">
+            <button class="btn btn-success" ng-click="main.loadGauges()" type="button">Search</button>
+          </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row hawkular-metrics-chart" ng-repeat="chart in main.charts track by $index">
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label>Metric</label>
+        <input class="form-control" ng-model="chart.id" ng-model-options="{debounce: 300}"/>
+      </div>
+      <div class="form-group">
+        <label>Chart Type</label>
+        <select class="form-control" ng-model="chart.type" ng-options="c for c in main.chartTypes" ></select>
+      </div>
+      <div class="form-group">
+        <label>Time Range</label>
+        <select class="form-control" ng-model="chart.timeRange" ng-options="c.value as c.label for c in main.timeRanges" ></select>
+      </div>
+      <div class="form-group">
+        <label>Refresh Interval(s)</label>
+        <input type="number" class="form-control" ng-model="chart.refreshInterval" min="1" />
+      </div>
+    </div>
+    <div class="col-xs-9" style="height: 260px;">
+    <button class="btn btn-default btn-sm btn-remove-chart" ng-click="main.removeChart($index)" title="Remove this chart">&times;</button>
+      <hawkular-chart
+        chart-type="{{chart.type}}"
+        chart-title="{{chart.id}}"
+        metric-tenant-id="{{main.metricInputs.tenantId}}"
+        metric-id="{{chart.id}}"
+        metric-url="{{main.metricInputs.metricsUrl}}"
+        time-range-in-seconds="{{chart.timeRange}}"
+        refresh-interval-in-seconds="{{chart.refreshInterval}}"
+        chart-height="250" >
+      </hawkular-chart>
+
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-3">
+      <div class="form-group">
+        <label>Select Chart</label>
+        <div class="input-group">
+          <select class="form-control" ng-model="main.newChart" ng-options="c.id for c in main.metrics"></select>
+          <span class="input-group-btn">
+            <button class="btn btn-success" ng-click="main.addChart(main.newChart)" type="button">Add</button>
+          </span>
+      </div>
+     </div>
+    </div>
+    <div class="col-xs-3">
+            <div class="form-group">
+        <label>Add Chart</label>
+        <div class="input-group">
+          <input class="form-control" ng-model="main.createChartId" placeholder="Type Metric ID" />
+          <span class="input-group-btn">
+            <button class="btn btn-success" ng-click="main.createChart()" type="button">Add</button>
+          </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+</div>
