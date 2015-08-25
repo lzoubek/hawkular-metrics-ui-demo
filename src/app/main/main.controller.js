@@ -34,8 +34,8 @@
 
       vm.userInputs = {
         metricsUrl: 'http://localhost:8080/hawkular/metrics',
-        tenantId: 'MyTenant3',
-        tagQuery: 'app:MyRubyApp'
+        tenantId: 'tenant',
+        tagQuery: 'tag:value'
       };
     }
 
